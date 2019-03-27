@@ -1,15 +1,35 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
-  "author": "",
+  "name": "Zillow",
+  "version": "1.0.0",
+  "description": "Mortage Calculator Service",
+  "author": "Brett Cunningham",
   "license": "",
   "engines": {
     "node": ">=6.13.0"
   },
-  "scripts": {},
-  "dependencies": {},
-  "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
-  }
+  "scripts": {
+    "seedDB": "node db/fakerTest.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-core": "^6.23.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "body-parser": "^1.17.2",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "express": "^4.15.0",
+    "faker": "^4.1.0",
+    "knex": "^0.16.3",
+    "mysql": "^2.15.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "request": "^2.83.0",
+    "sqlite3": "^4.0.6",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0"
+  },
+  "devDependencies": {}
 }
