@@ -9,7 +9,7 @@
   },
   "scripts": {
     "seedDB": "node db/fakerTest.js",
-    "start": "node server/index.js",
+    "start": "echo testing && node server/index.js",
     "sqliteShell": "sqlite3 fakePrices",
     "queryPricesDB": "node pricesDB.js"
   },
