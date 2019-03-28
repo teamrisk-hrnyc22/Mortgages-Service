@@ -1,33 +1,32 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var db = require('../db/pricesDB');
+var db = require('../database/pricesDB');
+var path = require('path');
 
 var app = express();
 
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(morgan('dev'));
+app.use(express.static(path.join(__dirname, '../dist')));
 
-app.get('/',function(req,res){
-  res.send('server created');
-})
-
-app.get('/price',function(req,res){
-
-  db.getPriceFromDB(null, function(result){
-    console.log('this is the result from the server',result)
+app.get('/price', function(req, res) {
+  db.getPriceFromDB(null, function(result) {
+    console.log('this is the result from the server', result);
     res.json(result);
   });
-})
+});
 
-app.get('/price/:priceId',function(req,res){
-
-  db.byIdgetPriceFromDB(null, req.params.priceId, function(result){
-    console.log('this is the result from the server',result)
+app.get('/price/:priceId', function(req, res) {
+  db.byIdgetPriceFromDB(null, req.params.priceId, function(result) { 
+    console.log('this is the result from the server', result);
     res.json(result);
   });
-})
+});
 
+var port = process.env.PORT || 3008
 
-app.listen(3000, console.log('server started on port 3000'));
+app.listen(port, function() {
+  console.log(`server listening on port ${port}`);
+});
