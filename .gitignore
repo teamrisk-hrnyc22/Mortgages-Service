@@ -7,5 +7,6 @@ npm-debug.log
 node_modules/
 
 ## Webpack stuff
-client/dist/bundle.js
+dist/
 config.js
+

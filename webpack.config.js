@@ -5,27 +5,27 @@ var path = require('path');
         'webpack/hot/only-dev-server',
         './src' */
 module.exports = {
-  devtool: 'inline-source-map',
-  entry: "./src/index.js",
-  output: {
-    path: path.join(__dirname, './dist'),
-    filename: 'bundle.js'
-  },
-  resolve: {
-    modulesDirectories: ['node_modules', 'src'],
-    extensions: ['', '.js']
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
-      }
+    devtool: 'inline-source-map',
+    entry: "./src/index.js",
+    output: {
+        path: path.join(__dirname, './dist'),
+        filename: 'bundle.js'
+    },
+    resolve: {
+        modulesDirectories: ['node_modules', 'src'],
+        extensions: ['', '.js']
+    },
+    module: {
+        loaders: [
+        {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
+        }
+        ]
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
     ]
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ]
 };

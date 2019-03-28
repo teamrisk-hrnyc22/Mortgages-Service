@@ -1,13 +1,12 @@
 {
-  "name": "node-mortgage",
+  "name": "react-todos",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/",
+    "start": "nodemon server",
     "seedDB": "node database/fakerTest.js",
     "react-dev": "webpack-dev-server --mode development --open --hot",
-    "myWebpack": "webpack --mode production",
     "sqliteShell": "sqlite3 fakePrices",
     "queryPricesDB": "node database/pricesDB.js"
   },
