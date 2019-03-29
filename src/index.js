@@ -1,5 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from 'components/app';
+import MortgageForm from 'components/mortgageForm';
 
-render(<App />, document.getElementById('app'));
+render(<MortgageForm />, document.getElementById('app'));
