@@ -1,7 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var db = require('./database/pricesDB');
+var db = require('./db/queryDB.js');
 var path = require('path');
 var cors = require('cors');
 
@@ -18,14 +18,14 @@ app.use(cors())
 app.get('/price', function(req, res) {
     db.getPriceFromDB(null, function(result) {
         console.log('this is the result from the server', result);
-        res.json(result);
+        res.send(result);
     });
 });
 
 app.get('/price/:priceId', function(req, res) {
     db.byIdgetPriceFromDB(null, req.params.priceId, function(result){ 
         console.log('this is the result from the server', result);
-        res.json(result);
+        res.send(result);
     });
 });
 

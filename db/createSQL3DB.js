@@ -1,6 +1,6 @@
 const faker = require('faker');
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('fakePrices');
+var db = new sqlite3.Database('fakePrices.sql');
 
 
 db.serialize(function() {
