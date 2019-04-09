@@ -4,6 +4,7 @@ const axios = require('axios');
 export default class MortgageForm extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             path: window.location.pathname,
             mortgageFields : {
@@ -33,7 +34,18 @@ export default class MortgageForm extends React.Component {
     componentDidMount() {
         var that = this;
         console.log(window);
-        axios.get(`http://localhost:3008/price${this.state.path}`).then(function(response) {
+        var url;
+        var endpoint = this.state.path === '/' ? 1 : this.state.path; 
+        console.log('this.state.path: ', this.state.path);
+
+        if ( endpoint === 1 ) {
+            url = 'http://localhost:3008/api/price'
+        } else {
+            url = `http://localhost:3008/api/price${this.state.path}`;
+            
+        }
+        console.log('url: ', url);
+        axios.get(url).then(function(response) {
             console.log('response from server at /price ', response);
             console.log('this is the response.data.price ', response.data.price);
 
@@ -179,43 +191,58 @@ export default class MortgageForm extends React.Component {
     }
 
     render() {
+        
         return (
             <div>
                 <h1>Mortgage Calculator</h1>
-                <form >
-                    <p>
+                <br></br>
+                <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
+                <br></br><br></br>
+
+                <form className="col-25">
+                    <div>
                         <label className="fieldLabel">Home price</label>
+                    </div>
                         <input onChange={this.handleHomePriceSubmit} type="text" placeholder={this.state.mortgageFields.homePrice}/>
-                        <input onSubmit={this.handleHomePriceSubmit} type="submit" className="hiddenButton"/>
-                    </p>
-                    <p>
-                        <label className="fieldLabel">Down payment</label>
+                       
+                    <div>
+                        <br></br>
+                        <label className="fieldLabel">Down payment</label>                        
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.downPayment} />
                         <input onChange={this.handleDownPaymentPercChange} type="text" placeholder={this.state.mortgageFields.downPaymentPerc} />
-                    </p>
-                    <p>
+                        
+                    <div>
+                        <br></br>
                         <label className="fieldLabel">Loan Program</label>
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.loanProgram} />
-                    </p>
                     
-                    <p>
+                    <div>
+                        <br></br><br></br>
                         <label className="fieldLabel">Interest rate</label>
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.interestRate}/>
-                    </p>
-                    <p>
+                    <div>
+                    <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.propertyTax} />
                         <input onChange={this.handlePropertyTaxPercChange} type="text" placeholder={this.state.mortgageFields.propertyTaxPerc} />
-                    </p>
-                    <p>
+                    <div>
+                        <br></br>
                         <label className="fieldLabel">Home Insurance</label>
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.homeInsurance} />
-                    </p>
-                    <p>
+                    <div>
+                        <br></br>
                         <label className="fieldLabel">HOA dues</label>
+                    </div>
                         <input type="text" placeholder={this.state.mortgageFields.hoaDues} />
-                    </p>
                 </form>
+                <div className="col-75">
+                        placeholder
+                </div>
             </div>
         );
     }
