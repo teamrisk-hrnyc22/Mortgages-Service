@@ -1,12 +1,22 @@
 {
-  "name": "react-todos",
+  "name": "Mortgage-Service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "quokka": {
+    "babel": {
+      "presets": [
+        "react-app"
+      ]
+    },
+    "plugins": [
+      "jsdom-quokka-plugin"
+    ]
+  },
   "scripts": {
     "start": "nodemon server",
     "seed": "node db/createSQL3DB.js",
-    "wp": "webpack -d --watch",
+    "build": "webpack -d --watch",
     "sqlShell": "sqlite3 fakePrices.sql",
     "queryPricesDB": "node db/pricesDB.js"
   },
@@ -25,8 +35,11 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.0",
     "babel-loader": "^8.0.5",
+    "babel-preset-react-app": "^7.0.2",
     "faker": "^4.1.0",
+    "jsdom-quokka-plugin": "^1.0.14",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "sqlite3": "^4.0.6",

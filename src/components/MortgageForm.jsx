@@ -5,6 +5,7 @@ export default class MortgageForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            path: window.location.pathname,
             mortgageFields : {
                 homePrice: 100000,
                 downPayment: 20000,
@@ -31,7 +32,8 @@ export default class MortgageForm extends React.Component {
 
     componentDidMount() {
         var that = this;
-        axios.get('http://localhost:3008/price').then(function(response) {
+        console.log(window);
+        axios.get(`http://localhost:3008/price${this.state.path}`).then(function(response) {
             console.log('response from server at /price ', response);
             console.log('this is the response.data.price ', response.data.price);
 
@@ -124,7 +126,7 @@ export default class MortgageForm extends React.Component {
         
         console.log('changing down payment percentage with', e.target.value)
         var num = parseFloat(e.target.value);
-        console.log('this is the num', num)
+        console.log('this is the num', num);
         if (!isNaN(num)) {
             var dpfields = this.calculateFieldsDownPaymentPerc(num);
             console.log(dpfields);
@@ -172,15 +174,14 @@ export default class MortgageForm extends React.Component {
 
     handleLoanProgramChange() {
         e.preventDefault();
-        // onchange update: IR
+        // onchange update: IRq
         console.log('changing home price with', e.target.value)
     }
-
 
     render() {
         return (
             <div>
-                <h1>Mortgage Brett</h1>
+                <h1>Mortgage Calculator</h1>
                 <form >
                     <p>
                         <label className="fieldLabel">Home price</label>
@@ -220,3 +221,5 @@ export default class MortgageForm extends React.Component {
     }
 
 }
+
+

@@ -13,7 +13,16 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, './dist')));
 
 
-app.use(cors())
+app.use(cors());
+
+app.get('/:number', function(req, res) {
+    console.log('getting here');
+    
+    console.log('__dirname: ', __dirname);
+    res.locals.id = req.params.number;
+    console.log(res.locals.id);
+    res.sendFile(path.join(__dirname, './dist/index.html'));
+});
 
 app.get('/price', function(req, res) {
     db.getPriceFromDB(null, function(result) {
@@ -25,6 +34,9 @@ app.get('/price', function(req, res) {
 app.get('/price/:priceId', function(req, res) {
     db.byIdgetPriceFromDB(null, req.params.priceId, function(result){ 
         console.log('this is the result from the server', result);
+        res.locals.id = req.params.priceId;
+        console.log('res.locals.id: ', res.locals.id);
+        
         res.send(result);
     });
 });
