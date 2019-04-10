@@ -1,4 +1,5 @@
 import React from 'react';
+import d3 from 'd3';
 const axios = require('axios');
 
 export default class MortgageForm extends React.Component {
@@ -191,7 +192,6 @@ export default class MortgageForm extends React.Component {
     }
 
     render() {
-        
         return (
             <div>
                 <h1>Mortgage Calculator</h1>
@@ -240,9 +240,10 @@ export default class MortgageForm extends React.Component {
                     </div>
                         <input type="text" placeholder={this.state.mortgageFields.hoaDues} />
                 </form>
-                <div className="col-75">
+                <aside className="col-75" id="donut">
                         placeholder
-                </div>
+
+                </aside>
             </div>
         );
     }
