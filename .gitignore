@@ -7,6 +7,5 @@ npm-debug.log
 node_modules/
 
 ## Webpack stuff
-dist/
 config.js
 
