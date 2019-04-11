@@ -14,7 +14,8 @@
     ]
   },
   "scripts": {
-    "start": "nodemon server",
+    "start": "node server",
+    "startDev": "nodemon server",
     "seed": "node db/createSQL3DB.js",
     "build": "webpack -d --watch",
     "sqlShell": "sqlite3 fakePrices.sql",

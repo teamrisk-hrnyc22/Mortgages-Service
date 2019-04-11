@@ -40,12 +40,22 @@ export default class MortgageForm extends React.Component {
         var endpoint = this.state.path === '/' ? 1 : this.state.path; 
         console.log('this.state.path: ', this.state.path);
 
+        // if ( endpoint === 1 ) {
+        //     url = 'http://localhost:3008/api/price'
+        // } else {
+        //     url = `http://localhost:3008/api/price${this.state.path}`;
+            
+        // }
+
+        
+
         if ( endpoint === 1 ) {
-            url = 'http://localhost:3008/api/price'
+            url = 'http://18.188.36.91:3008/api/price'
         } else {
-            url = `http://localhost:3008/api/price${this.state.path}`;
+            url = `http://18.188.36.91:3008/api/price${this.state.path}`;
             
         }
+
         console.log('url: ', url);
         axios.get(url).then(function(response) {
             console.log('response from server at /price ', response);
