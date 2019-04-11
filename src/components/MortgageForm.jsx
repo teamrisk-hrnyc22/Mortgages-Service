@@ -1,8 +1,26 @@
 import React from 'react';
 // import Chart from './Chart.jsx';
 import ReactMinimalPieChart from 'react-minimal-pie-chart';
+import CountUp from 'react-countup';
 
 const axios = require('axios');
+
+const strToNum = str => {
+
+    //Find 1-3 digits followed by exactly 3 digits & a comma or end of string
+    let regx = /(\d{1,3})(\d{3}(?:,|$))/;
+    let currStr;
+ 
+    do {
+        currStr = (currStr || str.split(`.`)[0])
+            .replace( regx, `$1,$2`)
+    } while (currStr.match(regx)) //Stop when there's no match & null's returned
+ 
+    return ( str.split(`.`)[1] ) ?
+            currStr.concat(`.`, str.split(`.`)[1]) :
+            currStr;
+ 
+ };
 
 export default class MortgageForm extends React.Component {
     constructor(props) {
@@ -18,7 +36,7 @@ export default class MortgageForm extends React.Component {
                 interestRate: 4,
                 propertyTax: 1000,
                 propertyTaxPerc: 1,
-                homeInsurance: 1050,
+                homeInsurance: 12600,
                 hoaDues: 296
             }
         }
@@ -217,55 +235,66 @@ export default class MortgageForm extends React.Component {
         console.log('apr: ', apr);
         var amt = this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment;
         console.log('amt: ', amt);
-        var monthlyPI = amt*(apr * Math.pow((1 + apr), term))/(Math.pow((1 + apr), term) - 1);
-        
+        var monthlyPI = (amt*(apr * Math.pow((1 + apr), term))/(Math.pow((1 + apr), term) - 1)).toFixed(0);
+        const MONTHLYPI = parseInt(monthlyPI);
+        console.log('MONTHLYPI: ', MONTHLYPI);
+        console.log('type of MONTHLYPI'+ (typeof MONTHLYPI));
+
+        var propertyTax = (this.state.mortgageFields.propertyTax/12).toFixed(0)
+        const PROPERTYTAX = parseInt(propertyTax);
+        var homeInsurance = (this.state.mortgageFields.homeInsurance/12).toFixed(0)
+        const HOMEINSURANCE =parseInt(homeInsurance);
+
+        var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
         return (
             <div>
                 <h1>Mortgage Calculator Bak</h1>
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
+                
 
                 <form className="col-25">
                     <div>
                         <label className="fieldLabel">Home price</label>
                     </div>
-                        <input onChange={this.handleHomePriceSubmit} type="text" placeholder={this.state.mortgageFields.homePrice}/>
+                        <input className="inputBrett" onChange={this.handleHomePriceSubmit} type="text" placeholder={this.state.mortgageFields.homePrice}/>
                        
                     <div>
                         <br></br>
                         <label className="fieldLabel">Down payment</label>                        
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.downPayment} />
-                        <input onChange={this.handleDownPaymentPercChange} type="text" placeholder={this.state.mortgageFields.downPaymentPerc} />
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.downPayment} />
+                        <input className="inputBrett" onChange={this.handleDownPaymentPercChange} type="text" placeholder={this.state.mortgageFields.downPaymentPerc} />
                         
                     <div>
                         <br></br>
                         <label className="fieldLabel">Loan Program</label>
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.loanProgram} />
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.loanProgram} />
                     
                     <div>
                         <br></br><br></br>
+                        {/* <a href="https://www.zillow.com/mortgage-rates/?value=1522429&amp;down=304486&amp;auto=true&amp;source=Z_Mortgage_Calc_rates" target="_blank" rel="nofollow">See current rates</a> */}
                         <label className="fieldLabel">Interest rate</label>
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.interestRate}/>
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.interestRate}/>
                     <div>
                     <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.propertyTax} />
-                        <input onChange={this.handlePropertyTaxPercChange} type="text" placeholder={this.state.mortgageFields.propertyTaxPerc} />
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.propertyTax} />
+                        <input className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="text" placeholder={this.state.mortgageFields.propertyTaxPerc} />
                     <div>
                         <br></br>
                         <label className="fieldLabel">Home Insurance</label>
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.homeInsurance} />
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.homeInsurance} />
                     <div>
                         <br></br>
                         <label className="fieldLabel">HOA dues</label>
                     </div>
-                        <input type="text" placeholder={this.state.mortgageFields.hoaDues} />
+                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
                         placeholder
@@ -301,18 +330,18 @@ export default class MortgageForm extends React.Component {
                         data={[
                             {
                             title: 'P & I',
-                            value: monthlyPI,
-                            color: '#E38627'
+                            value: MONTHLYPI,
+                            color: '#1274e4'
                             },
                             {
                             title: 'taxes',
-                            value: this.state.mortgageFields.propertyTax,
-                            color: '#C13C37'
+                            value: PROPERTYTAX,
+                            color: '#62aef7'
                             },
                             {
                             title: 'insurance',
-                            value: this.state.mortgageFields.homeInsurance,
-                            color: '#6A2135'
+                            value: HOMEINSURANCE,
+                            color: '#3390e9'
                             }
                         ]}
                         style= {{height: '400px'}}
@@ -326,11 +355,29 @@ export default class MortgageForm extends React.Component {
                         radius={35} 
                         labelPosition={112}
                     />
+                    <CountUp
+                    start={0}
+                    end={totalPayment}
+                    duration={1}
+                    separator=","
+                    decimal=","
+                    prefix="$"
+                   
+                    >
+                    {/* {({ countUpRef, start }) => (
+                        <div>
+                        <span ref={countUpRef} />
+                        <button onClick={start}>Start</button>
+                        </div>
+                    )} */}
+                    </CountUp>
+                    
                 </div>
             </div>
         );
     }
 
 }
-
+ // onEnd={() => console.log('Ended! 👏')}
+                    // onStart={() => console.log('Started! 💨')}
 
