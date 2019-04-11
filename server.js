@@ -25,10 +25,14 @@ app.get('/:number', function(req, res) {
 });
 
 app.get('/api/price', function(req, res) {
-    db.getPriceFromDB(null, function(result) {
-        console.log('/price this is the result from the server', result);
-        res.send(result);
-    });
+    // db.getPriceFromDB(null, function(result) {
+    //     console.log('/price this is the result from the server', result);
+    //     res.send(result);
+    // }); 
+
+    res.send({
+        "price": 100000
+    })
 });
 
 app.get('/api/price/:priceId', function(req, res) {

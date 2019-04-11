@@ -5,6 +5,7 @@ const styles = {
   width   : 1000,
   height  : 300,
   padding : 30,
+  position: relative
 };
 
 // The number of data points for the chart.

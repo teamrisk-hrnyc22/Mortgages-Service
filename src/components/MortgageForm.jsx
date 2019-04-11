@@ -1,5 +1,6 @@
 import React from 'react';
-import Chart from './Chart.jsx';
+// import Chart from './Chart.jsx';
+import ReactMinimalPieChart from 'react-minimal-pie-chart';
 
 const axios = require('axios');
 
@@ -12,12 +13,12 @@ export default class MortgageForm extends React.Component {
             mortgageFields : {
                 homePrice: 100000,
                 downPayment: 20000,
-                downPaymentPerc: .2,
+                downPaymentPerc: 20,
                 loanProgram: 30,
-                interestRate: .04176,
+                interestRate: 4,
                 propertyTax: 1000,
-                propertyTaxPerc: .1,
-                homeInsurance: 3381,
+                propertyTaxPerc: 1,
+                homeInsurance: 1050,
                 hoaDues: 296
             }
         }
@@ -40,21 +41,21 @@ export default class MortgageForm extends React.Component {
         var endpoint = this.state.path === '/' ? 1 : this.state.path; 
         console.log('this.state.path: ', this.state.path);
 
-        // if ( endpoint === 1 ) {
-        //     url = 'http://localhost:3008/api/price'
-        // } else {
-        //     url = `http://localhost:3008/api/price${this.state.path}`;
+        if ( endpoint === 1 ) {
+            url = 'http://localhost:3008/api/price'
+        } else {
+            url = `http://localhost:3008/api/price${this.state.path}`;
             
-        // }
+        }
 
         
 
-        if ( endpoint === 1 ) {
-            url = 'http://18.188.36.91:3008/api/price'
-        } else {
-            url = `http://18.188.36.91:3008/api/price${this.state.path}`;
+        // if ( endpoint === 1 ) {
+        //     url = 'http://18.188.36.91:3008/api/price'
+        // } else {
+        //     url = `http://18.188.36.91:3008/api/price${this.state.path}`;
             
-        }
+        // }
 
         console.log('url: ', url);
         axios.get(url).then(function(response) {
@@ -62,14 +63,14 @@ export default class MortgageForm extends React.Component {
             console.log('this is the response.data.price ', response.data.price);
 
             var hpfields = that.calculateFieldsHomePrice(response.data.price);
-            
+            var ptfields = that.calculateFieldsPropertyTaxPerc(that.state.mortgageFields.homePrice)
             that.setState({
                 mortgageFields : {
                     homePrice: response.data.price,
                     downPayment: hpfields.downPayment,
                     downPaymentPerc: that.state.mortgageFields.downPaymentPerc,
                     loanProgram: that.state.mortgageFields.loanProgram,
-                    interestRate: hpfields.interestRate,
+                    interestRate: that.state.mortgageFields.interestRate,
                     propertyTax: hpfields.propertyTax,
                     propertyTaxPerc: that.state.mortgageFields.propertyTaxPerc,
                     homeInsurance: that.state.mortgageFields.homeInsurance,
@@ -81,25 +82,30 @@ export default class MortgageForm extends React.Component {
 
     calculateFieldsHomePrice(homePrice) {
         let obj = {};
+       var rpt = this.state.mortgageFields.propertyTaxPerc/100
+       var rdp = this.state.mortgageFields.downPaymentPerc/100
        
-        obj.downPayment =this.state.mortgageFields.downPaymentPerc * homePrice;
-        obj.propertyTax = this.state.mortgageFields.propertyTaxPerc * homePrice;
-        obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
-
+       
+        obj.downPayment = rdp * homePrice;
+        obj.propertyTax = ( homePrice * rpt);
+        console.log('homePrice: ', homePrice);
+        // obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
+        console.log('obj: ', obj);
         return obj;
+        
     }
 
     calculateFieldsDownPaymentPerc(downPaymentPerc) {
         let obj = {};
 
-        obj.downPayment = downPaymentPerc * this.state.mortgageFields.homePrice;
-        obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
+        obj.downPayment = (downPaymentPerc/100) * this.state.mortgageFields.homePrice;
+        // obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
 
         return obj;
     }
     calculateFieldsPropertyTaxPerc(propertyTaxPerc) {
         let obj = {};
-        obj.propertyTax = this.state.mortgageFields.homePrice * propertyTaxPerc;
+        obj.propertyTax = this.state.mortgageFields.homePrice * (propertyTaxPerc/100);
 
         return obj;
     }
@@ -108,7 +114,7 @@ export default class MortgageForm extends React.Component {
         let obj = {};
 
         if ( program === '30-year fixed' ) {
-            obj.interestRate = 4.06;
+            obj.interestRate = 4.00;
         } else if ( program === '15-year fixed' ) {
             obj.interestRate = 4.50;
         } else if ( program === '5/1 ARM' ) {
@@ -134,7 +140,7 @@ export default class MortgageForm extends React.Component {
                     downPayment: hpfields.downPayment,
                     downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
                     loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: hpfields.interestRate,
+                    interestRate: this.state.mortgageFields.interestRate,
                     propertyTax: hpfields.propertyTax,
                     propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
                     homeInsurance: this.state.mortgageFields.homeInsurance,
@@ -160,7 +166,7 @@ export default class MortgageForm extends React.Component {
                     downPayment: dpfields.downPayment,
                     downPaymentPerc: num,
                     loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: dpfields.interestRate,
+                    interestRate: this.state.mortgageFields.interestRate,
                     propertyTax: this.state.mortgageFields.propertyTax,
                     propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
                     homeInsurance: this.state.mortgageFields.homeInsurance,
@@ -204,10 +210,18 @@ export default class MortgageForm extends React.Component {
     }
 
     render() {
-
+        var homePrice = this.state.mortgageFields.homePrice;
+        console.log('homePrice: ', homePrice);
+        var term = 360
+        var apr = this.state.mortgageFields.interestRate / 1200;
+        console.log('apr: ', apr);
+        var amt = this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment;
+        console.log('amt: ', amt);
+        var monthlyPI = amt*(apr * Math.pow((1 + apr), term))/(Math.pow((1 + apr), term) - 1);
+        
         return (
             <div>
-                <h1>Mortgage Calculator</h1>
+                <h1>Mortgage Calculator Bak</h1>
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
@@ -255,7 +269,63 @@ export default class MortgageForm extends React.Component {
                 </form>
                 <div className="col-75" id="donut">
                         placeholder
-                    <Chart />
+                    {/* <Chart /> */}
+                    {/* <PieChart
+                        data={[
+                            { title: 'One', value: 10, color: '#E38627' },
+                            { title: 'Two', value: 15, color: '#C13C37' },
+                            { title: 'Three', value: 20, color: '#6A2135' },
+                        ]}
+                    /> */}
+                    {/* <ReactMinimalPieChart
+                      data={[
+                        {
+                        title: 'One',
+                        value: 10,
+                        color: '#E38627'
+                        },
+                        {
+                        title: 'Two',
+                        value: 15,
+                        color: '#C13C37'
+                        },
+                        {
+                        title: 'Three',
+                        value: 20,
+                        color: '#6A2135'
+                        }
+                    ]}
+                      lineWidth={15}
+                    /> */}
+                    <ReactMinimalPieChart
+                        data={[
+                            {
+                            title: 'P & I',
+                            value: monthlyPI,
+                            color: '#E38627'
+                            },
+                            {
+                            title: 'taxes',
+                            value: this.state.mortgageFields.propertyTax,
+                            color: '#C13C37'
+                            },
+                            {
+                            title: 'insurance',
+                            value: this.state.mortgageFields.homeInsurance,
+                            color: '#6A2135'
+                            }
+                        ]}
+                        style= {{height: '400px'}}
+                        animate 
+                        lineWidth={15} 
+                        label 
+                        labelStyle={{
+                            fontSize: '5px', 
+                            fontFamily: 'sans-serif'
+                        }} 
+                        radius={35} 
+                        labelPosition={112}
+                    />
                 </div>
             </div>
         );
