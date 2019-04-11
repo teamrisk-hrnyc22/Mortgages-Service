@@ -1,5 +1,6 @@
 import React from 'react';
-import * as d3 from 'd3';
+import Chart from './Chart.jsx';
+
 const axios = require('axios');
 
 export default class MortgageForm extends React.Component {
@@ -244,7 +245,7 @@ export default class MortgageForm extends React.Component {
                 </form>
                 <div className="col-75" id="donut">
                         placeholder
-                    
+                    <Chart />
                 </div>
             </div>
         );
