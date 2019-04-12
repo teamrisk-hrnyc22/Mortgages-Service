@@ -63,21 +63,21 @@ export default class MortgageForm extends React.Component {
         var endpoint = this.state.path === '/' ? 1 : this.state.path; 
         console.log('this.state.path: ', this.state.path);
 
-        if ( endpoint === 1 ) {
-            url = 'http://localhost:3008/api/price'
-        } else {
-            url = `http://localhost:3008/api/price${this.state.path}`;
+        // if ( endpoint === 1 ) {
+        //     url = 'http://localhost:3008/api/price'
+        // } else {
+        //     url = `http://localhost:3008/api/price${this.state.path}`;
             
-        }
+        // }
 
         
 
-        // if ( endpoint === 1 ) {
-        //     url = 'http://18.188.36.91:3008/api/price'
-        // } else {
-        //     url = `http://18.188.36.91:3008/api/price${this.state.path}`;
+        if ( endpoint === 1 ) {
+            url = 'http://18.188.36.91:3008/api/price'
+        } else {
+            url = `http://18.188.36.91:3008/api/price${this.state.path}`;
             
-        // }
+        }
 
         console.log('url: ', url);
         axios.get(url).then(function(response) {
@@ -385,8 +385,14 @@ export default class MortgageForm extends React.Component {
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
 
+<<<<<<< HEAD
 
         var width = 700,
+||||||| merged common ancestors
+        var width = 700,
+=======
+        var width = 400,
+>>>>>>> 5df99bf94a7440998cebea980986ff58b8e028bf
             height = 400,
             radius = Math.min(width, height) / 2;
             
@@ -396,25 +402,7 @@ export default class MortgageForm extends React.Component {
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
-                <div className="countUpContainer">
-                <p className="countLabelBrett">Your payment</p>
-                        <CountUp
-                            start={0}
-                            end={totalPayment}
-                            duration={1}
-                            separator=","
-                            decimal=","
-                            prefix="$"
-                            className="countUpBrett"
-                        >
-                            {/* {({ countUpRef, start }) => (
-                                <div>
-                                <span ref={countUpRef} />
-                                <button onClick={start}>Start</button>
-                                </div>
-                            )} */}
-                        </CountUp>
-                    </div>
+                
 
                 <form className="col-25 formBrett">
                     <div className="form-field-Brett">
@@ -468,7 +456,23 @@ export default class MortgageForm extends React.Component {
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
-                    
+                <p className="countLabelBrett">Your payment</p>
+                        <CountUp
+                            start={0}
+                            end={totalPayment}
+                            duration={1}
+                            separator=","
+                            decimal=","
+                            prefix="$"
+                            className="countUpBrett"
+                        >
+                            {/* {({ countUpRef, start }) => (
+                                <div>
+                                <span ref={countUpRef} />
+                                <button onClick={start}>Start</button>
+                                </div>
+                            )} */}
+                        </CountUp>
                     {/* <Chart /> */}
                     {/* <PieChart
                         data={[
@@ -529,8 +533,8 @@ export default class MortgageForm extends React.Component {
                     
                     
                 </div>
-                <svg viewBox="0 225 1000 800">
-                    <Piechart x={width} y={height} outerRadius={radius * 0.85} innerRadius={radius * 0.7}
+                <svg viewBox="0 225 600 450">
+                    <Piechart x={width} y={height} outerRadius={radius * 0.5} innerRadius={radius * 0.4}
                         data={[
                             {label: 'P & I', value: MONTHLYPI},
                             {label: 'Taxes', value: PROPERTYTAX},
