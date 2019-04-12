@@ -247,54 +247,58 @@ export default class MortgageForm extends React.Component {
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
         return (
-            <div>
+            <div className="layoutBrett">
                 <h1>Mortgage Calculator Bak</h1>
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
-                
+            
 
-                <form className="col-25">
-                    <div>
+                <form className="col-25 formBrett">
+                    <div className="form-field-Brett">
                         <label className="fieldLabel">Home price</label>
+                        <div className="input-overlay_left inputs-homePrice">
+                            <div class="zsg-input-overlay-text_left">$</div>
+                            <input autoComplete="off" className="inputBrett" onChange={this.handleHomePriceSubmit} type="tel" value={this.state.mortgageFields.homePrice}/>
+                        </div>
+
+                        {/* <p class="zsg-form-error-text">Invalid home price</p> */}
                     </div>
-                        <input className="inputBrett" onChange={this.handleHomePriceSubmit} type="text" placeholder={this.state.mortgageFields.homePrice}/>
-                       
                     <div>
                         <br></br>
                         <label className="fieldLabel">Down payment</label>                        
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.downPayment} />
-                        <input className="inputBrett" onChange={this.handleDownPaymentPercChange} type="text" placeholder={this.state.mortgageFields.downPaymentPerc} />
+                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.downPayment} />
+                        <input autoComplete="off" className="inputBrett" onChange={this.handleDownPaymentPercChange} type="tel" value={this.state.mortgageFields.downPaymentPerc} />
                         
                     <div>
                         <br></br>
                         <label className="fieldLabel">Loan Program</label>
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.loanProgram} />
+                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram} />
                     
                     <div>
                         <br></br><br></br>
                         {/* <a href="https://www.zillow.com/mortgage-rates/?value=1522429&amp;down=304486&amp;auto=true&amp;source=Z_Mortgage_Calc_rates" target="_blank" rel="nofollow">See current rates</a> */}
                         <label className="fieldLabel">Interest rate</label>
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.interestRate}/>
+                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.interestRate}/>
                     <div>
                     <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.propertyTax} />
-                        <input className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="text" placeholder={this.state.mortgageFields.propertyTaxPerc} />
+                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.propertyTax} />
+                        <input autoComplete="off" className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="tel" value={this.state.mortgageFields.propertyTaxPerc} />
                     <div>
                         <br></br>
                         <label className="fieldLabel">Home Insurance</label>
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.homeInsurance} />
+                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.homeInsurance} />
                     <div>
                         <br></br>
                         <label className="fieldLabel">HOA dues</label>
                     </div>
-                        <input className="inputBrett" type="text" placeholder={this.state.mortgageFields.hoaDues} />
+                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
                         placeholder
