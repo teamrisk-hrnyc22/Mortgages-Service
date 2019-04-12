@@ -63,21 +63,21 @@ export default class MortgageForm extends React.Component {
         var endpoint = this.state.path === '/' ? 1 : this.state.path; 
         console.log('this.state.path: ', this.state.path);
 
-        if ( endpoint === 1 ) {
-            url = 'http://localhost:3008/api/price'
-        } else {
-            url = `http://localhost:3008/api/price${this.state.path}`;
+        // if ( endpoint === 1 ) {
+        //     url = 'http://localhost:3008/api/price'
+        // } else {
+        //     url = `http://localhost:3008/api/price${this.state.path}`;
             
-        }
+        // }
 
         
 
-        // if ( endpoint === 1 ) {
-        //     url = 'http://18.188.36.91:3008/api/price'
-        // } else {
-        //     url = `http://18.188.36.91:3008/api/price${this.state.path}`;
+        if ( endpoint === 1 ) {
+            url = 'http://18.188.36.91:3008/api/price'
+        } else {
+            url = `http://18.188.36.91:3008/api/price${this.state.path}`;
             
-        // }
+        }
 
         console.log('url: ', url);
         axios.get(url).then(function(response) {
@@ -312,7 +312,6 @@ export default class MortgageForm extends React.Component {
     }
 
     render() {
-<<<<<<< HEAD
         var homePrice = this.state.mortgageFields.homePrice;
         console.log('homePrice: ', homePrice);
         var term = 360
@@ -336,45 +335,11 @@ export default class MortgageForm extends React.Component {
         const HOMEINSURANCE =parseInt(homeInsurance);
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
-||||||| merged common ancestors
-=======
-        var homePrice = this.state.mortgageFields.homePrice;
-        console.log('homePrice: ', homePrice);
-        var term = 360
-        
-        if (!isNaN(this.state.mortgageFields.interestRate)) {
-            var apr = this.state.mortgageFields.interestRate / 1200;
-        } else {
-            var apr = 0;
-        }
-        console.log('apr: ', apr);
-        var amt = this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment;
-        console.log('amt: ', amt);
-        var monthlyPI = (amt*(apr * Math.pow((1 + apr), term))/(Math.pow((1 + apr), term) - 1)).toFixed(0);
-        const MONTHLYPI = parseInt(monthlyPI);
-        console.log('MONTHLYPI: ', MONTHLYPI);
-        console.log('type of MONTHLYPI'+ (typeof MONTHLYPI));
-
-        var propertyTax = (this.state.mortgageFields.propertyTax/12).toFixed(0)
-        const PROPERTYTAX = parseInt(propertyTax);
-        var homeInsurance = (this.state.mortgageFields.homeInsurance/12).toFixed(0)
-        const HOMEINSURANCE =parseInt(homeInsurance);
->>>>>>> 6650031d889b4ba4ad12f42134c0665c6fd84262
-
-<<<<<<< HEAD
-        var width = 700,
-            height = 400,
-            radius = Math.min(width, height) / 2;
-            
-||||||| merged common ancestors
-=======
-        var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
 
         var width = 700,
             height = 400,
             radius = Math.min(width, height) / 2;
             
->>>>>>> 6650031d889b4ba4ad12f42134c0665c6fd84262
         return (
             <div className="layoutBrett">
                 <h1>Mortgage Calculator Bak</h1>
@@ -448,85 +413,6 @@ export default class MortgageForm extends React.Component {
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
-<<<<<<< HEAD
-                    <p className="countLabelBrett">Your payment</p>
-                    <CountUp
-                        start={0}
-                        end={totalPayment}
-                        duration={1}
-                        separator=","
-                        decimal=","
-                        prefix="$"
-                        className="countUpBrett"
-                    >
-                        {/* {({ countUpRef, start }) => (
-                            <div>
-                            <span ref={countUpRef} />
-                            <button onClick={start}>Start</button>
-                            </div>
-                        )} */}
-                    </CountUp>
-                    {/* <Chart /> */}
-                    {/* <PieChart
-                        data={[
-                            { title: 'One', value: 10, color: '#E38627' },
-                            { title: 'Two', value: 15, color: '#C13C37' },
-                            { title: 'Three', value: 20, color: '#6A2135' },
-                        ]}
-                    /> */}
-                    {/* <ReactMinimalPieChart
-                      data={[
-                        {
-                        title: 'One',
-                        value: 10,
-                        color: '#E38627'
-                        },
-                        {
-                        title: 'Two',
-                        value: 15,
-                        color: '#C13C37'
-                        },
-                        {
-                        title: 'Three',
-                        value: 20,
-                        color: '#6A2135'
-                        }
-                    ]}
-                      lineWidth={15}
-                    /> */}
-                    <ReactMinimalPieChart
-                        data={[
-                            {
-                            title: 'P & I',
-                            value: MONTHLYPI,
-                            color: '#1274e4'
-                            },
-                            {
-                            title: 'taxes',
-                            value: PROPERTYTAX,
-                            color: '#62aef7'
-                            },
-                            {
-                            title: 'insurance',
-                            value: HOMEINSURANCE,
-                            color: '#3390e9'
-                            }
-                        ]}
-                        style= {{height: '400px'}}
-                        animate 
-                        lineWidth={15} 
-                        label 
-                        labelStyle={{
-                            fontSize: '5px', 
-                            fontFamily: 'sans-serif'
-                        }} 
-                        radius={35} 
-                        labelPosition={112}
-                    />
-                    
-||||||| merged common ancestors
-                        placeholder
-=======
                     
                     {/* <Chart /> */}
                     {/* <PieChart
@@ -586,7 +472,6 @@ export default class MortgageForm extends React.Component {
                         labelPosition={112}
                     />
                     
->>>>>>> 6650031d889b4ba4ad12f42134c0665c6fd84262
                     
                 </div>
                 <svg viewBox="0 225 1000 800">
