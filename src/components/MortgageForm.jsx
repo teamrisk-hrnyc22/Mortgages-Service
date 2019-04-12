@@ -385,14 +385,7 @@ export default class MortgageForm extends React.Component {
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
 
-<<<<<<< HEAD
-
-        var width = 700,
-||||||| merged common ancestors
-        var width = 700,
-=======
         var width = 400,
->>>>>>> 5df99bf94a7440998cebea980986ff58b8e028bf
             height = 400,
             radius = Math.min(width, height) / 2;
             
