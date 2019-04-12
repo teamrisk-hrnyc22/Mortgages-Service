@@ -346,7 +346,25 @@ export default class MortgageForm extends React.Component {
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
-            
+                <div className="countUpContainer">
+                <p className="countLabelBrett">Your payment</p>
+                        <CountUp
+                            start={0}
+                            end={totalPayment}
+                            duration={1}
+                            separator=","
+                            decimal=","
+                            prefix="$"
+                            className="countUpBrett"
+                        >
+                            {/* {({ countUpRef, start }) => (
+                                <div>
+                                <span ref={countUpRef} />
+                                <button onClick={start}>Start</button>
+                                </div>
+                            )} */}
+                        </CountUp>
+                    </div>
 
                 <form className="col-25 formBrett">
                     <div className="form-field-Brett">
@@ -395,24 +413,7 @@ export default class MortgageForm extends React.Component {
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
-                    <div className="countUpContainer">
-                        <CountUp
-                            start={0}
-                            end={totalPayment}
-                            duration={1}
-                            separator=","
-                            decimal=","
-                            prefix="$"
-                            className="countUpBrett"
-                        >
-                            {/* {({ countUpRef, start }) => (
-                                <div>
-                                <span ref={countUpRef} />
-                                <button onClick={start}>Start</button>
-                                </div>
-                            )} */}
-                        </CountUp>
-                    </div>
+                    
                     {/* <Chart /> */}
                     {/* <PieChart
                         data={[

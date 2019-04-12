@@ -62,6 +62,23 @@
      margin: 0 25px;
 }
 
+.countUpBrett {
+     position: absolute;
+     top: 192px;
+     left: 640px;
+     font-size: 50px;
+}
 
+.countUpContainer {
+     position: relative;
+}
+
+.countLabelBrett {
+     position: absolute;
+     top: 160px;
+     left: 625px;
+     font-size: 26px;
+     font-weight: bold;
+}
 
 
