@@ -472,7 +472,7 @@ export default class MortgageForm extends React.Component {
                     
                     
                 </div>
-                <svg viewBox="0 225 1000 450">
+                <svg viewBox="0 225 600 450">
                     <Piechart x={width} y={height} outerRadius={radius * 0.5} innerRadius={radius * 0.4}
                         data={[
                             {label: 'P & I', value: MONTHLYPI},
