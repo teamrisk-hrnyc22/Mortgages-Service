@@ -64,16 +64,8 @@
 
 .countUpBrett {
      position: absolute;
-<<<<<<< HEAD
-     top: 134px;
-     left: 640px;
-||||||| merged common ancestors
-     top: 192px;
-     left: 640px;
-=======
      top: 192px;
      left: 39%;
->>>>>>> 5df99bf94a7440998cebea980986ff58b8e028bf
      font-size: 50px;
 }
 
