@@ -305,10 +305,53 @@ export default class MortgageForm extends React.Component {
     }
     
 
-    handleLoanProgramChange() {
+    handleLoanProgramChange(e) {
         e.preventDefault();
         // onchange update: IRq
         console.log('changing home price with', e.target.value)
+        if (e.target.value === '30-year fixed') {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: 30,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
+        } else if (e.target.value === '15-year fixed') {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: 15,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
+        } else {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: 5,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
+        }
     }
 
     render() {
@@ -324,11 +367,17 @@ export default class MortgageForm extends React.Component {
         console.log('apr: ', apr);
         var amt = this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment;
         console.log('amt: ', amt);
-        var monthlyPI = (amt*(apr * Math.pow((1 + apr), term))/(Math.pow((1 + apr), term) - 1)).toFixed(0);
+
+        var loanProgram = this.state.mortgageFields.loanProgram;
+        console.log('loanProgram: ', loanProgram);
+        console.log('type of loanProgram'+ (typeof loanProgram));
+        const LOANPROGRAM = loanProgram * 12;
+
+        var monthlyPI = (amt*(apr * Math.pow((1 + apr), LOANPROGRAM))/(Math.pow((1 + apr), LOANPROGRAM) - 1)).toFixed(0);
         const MONTHLYPI = parseInt(monthlyPI);
         console.log('MONTHLYPI: ', MONTHLYPI);
         console.log('type of MONTHLYPI'+ (typeof MONTHLYPI));
-
+    
         var propertyTax = (this.state.mortgageFields.propertyTax/12).toFixed(0)
         const PROPERTYTAX = parseInt(propertyTax);
         var homeInsurance = (this.state.mortgageFields.homeInsurance/12).toFixed(0)
@@ -336,13 +385,14 @@ export default class MortgageForm extends React.Component {
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
 
+
         var width = 700,
             height = 400,
             radius = Math.min(width, height) / 2;
             
         return (
             <div className="layoutBrett">
-                <h1>Mortgage Calculator Bak</h1>
+                <h1>Mortgage Calculator</h1>
                 <br></br>
                 <p>Use our home loan calculator to estimate your mortgage payment, with taxes and insurance. Simply enter the price of the home, your down payment, and details about the home loan to calculate your mortgage payment breakdown, schedule, and more.</p>
                 <br></br><br></br>
@@ -387,8 +437,13 @@ export default class MortgageForm extends React.Component {
                         <br></br>
                         <label className="fieldLabel">Loan Program</label>
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram} />
-                    
+                        
+                        <select onChange={this.handleLoanProgramChange} >
+                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>30-year fixed</option>
+                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>15-year fixed</option>
+                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>5/1 ARM</option>
+                        </select>
+
                     <div>
                         <br></br><br></br>
                         {/* <a href="https://www.zillow.com/mortgage-rates/?value=1522429&amp;down=304486&amp;auto=true&amp;source=Z_Mortgage_Calc_rates" target="_blank" rel="nofollow">See current rates</a> */}
