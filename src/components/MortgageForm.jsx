@@ -2,6 +2,9 @@ import React from 'react';
 // import Chart from './Chart.jsx';
 import ReactMinimalPieChart from 'react-minimal-pie-chart';
 import CountUp from 'react-countup';
+import Piechart from './Piechart.jsx';
+
+
 
 const axios = require('axios');
 
@@ -46,6 +49,7 @@ export default class MortgageForm extends React.Component {
         this.handleDownPaymentPercChange = this.handleDownPaymentPercChange.bind(this);
         this.handlePropertyTaxPercChange = this.handlePropertyTaxPercChange.bind(this);
         this.handleLoanProgramChange = this.handleLoanProgramChange.bind(this);
+        this.handleInterestRateChange = this.handleInterestRateChange.bind(this);
         this.calculateFieldsHomePrice = this.calculateFieldsHomePrice.bind(this);
         this.calculateFieldsDownPaymentPerc = this.calculateFieldsDownPaymentPerc.bind(this);
         this.calculateFieldsPropertyTaxPerc = this.calculateFieldsPropertyTaxPerc.bind(this);
@@ -165,6 +169,20 @@ export default class MortgageForm extends React.Component {
                     hoaDues: this.state.mortgageFields.hoaDues
                 }
             });
+        } else {
+            this.setState({
+                mortgageFields: {
+                    homePrice: '',
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: this.state.mortgageFields.loanProgram,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
         }
     }
 
@@ -191,6 +209,20 @@ export default class MortgageForm extends React.Component {
                     hoaDues: this.state.mortgageFields.hoaDues
                 }
             });
+        } else {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: '',
+                    loanProgram: this.state.mortgageFields.loanProgram,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
         }
     }
 
@@ -217,6 +249,58 @@ export default class MortgageForm extends React.Component {
                     hoaDues: this.state.mortgageFields.hoaDues
                 }
             });
+        } else {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: this.state.mortgageFields.loanProgram,
+                    interestRate: this.state.mortgageFields.interestRate,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: '',
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
+        }
+    }
+
+    handleInterestRateChange(e) {
+        e.preventDefault();
+
+        console.log('changing interestRate with', e.target.value)
+        var num = parseInt(e.target.value);
+        console.log('this is the num', num)
+        if (!isNaN(num)) {
+            
+            this.setState({
+                mortgageFields : {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: this.state.mortgageFields.loanProgram,
+                    interestRate: num,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            });
+        } else {
+            this.setState({
+                mortgageFields: {
+                    homePrice: this.state.mortgageFields.homePrice,
+                    downPayment: this.state.mortgageFields.downPayment,
+                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+                    loanProgram: this.state.mortgageFields.loanProgram,
+                    interestRate: 1,
+                    propertyTax: this.state.mortgageFields.propertyTax,
+                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+                    homeInsurance: this.state.mortgageFields.homeInsurance,
+                    hoaDues: this.state.mortgageFields.hoaDues
+                }
+            })
         }
     }
     
@@ -231,7 +315,12 @@ export default class MortgageForm extends React.Component {
         var homePrice = this.state.mortgageFields.homePrice;
         console.log('homePrice: ', homePrice);
         var term = 360
-        var apr = this.state.mortgageFields.interestRate / 1200;
+        
+        if (!isNaN(this.state.mortgageFields.interestRate)) {
+            var apr = this.state.mortgageFields.interestRate / 1200;
+        } else {
+            var apr = 0;
+        }
         console.log('apr: ', apr);
         var amt = this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment;
         console.log('amt: ', amt);
@@ -246,6 +335,11 @@ export default class MortgageForm extends React.Component {
         const HOMEINSURANCE =parseInt(homeInsurance);
 
         var totalPayment = MONTHLYPI + (this.state.mortgageFields.propertyTax/12) + (this.state.mortgageFields.homeInsurance/12);
+
+        var width = 700,
+            height = 400,
+            radius = Math.min(width, height) / 2;
+            
         return (
             <div className="layoutBrett">
                 <h1>Mortgage Calculator Bak</h1>
@@ -258,7 +352,7 @@ export default class MortgageForm extends React.Component {
                     <div className="form-field-Brett">
                         <label className="fieldLabel">Home price</label>
                         <div className="input-overlay_left inputs-homePrice">
-                            <div class="zsg-input-overlay-text_left">$</div>
+                            <div className="zsg-input-overlay-text_left">$</div>
                             <input autoComplete="off" className="inputBrett" onChange={this.handleHomePriceSubmit} type="tel" value={this.state.mortgageFields.homePrice}/>
                         </div>
 
@@ -268,7 +362,7 @@ export default class MortgageForm extends React.Component {
                         <br></br>
                         <label className="fieldLabel">Down payment</label>                        
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.downPayment} />
+                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.downPayment} onChange={this.handleDownPaymentChange}/>
                         <input autoComplete="off" className="inputBrett" onChange={this.handleDownPaymentPercChange} type="tel" value={this.state.mortgageFields.downPaymentPerc} />
                         
                     <div>
@@ -282,7 +376,7 @@ export default class MortgageForm extends React.Component {
                         {/* <a href="https://www.zillow.com/mortgage-rates/?value=1522429&amp;down=304486&amp;auto=true&amp;source=Z_Mortgage_Calc_rates" target="_blank" rel="nofollow">See current rates</a> */}
                         <label className="fieldLabel">Interest rate</label>
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.interestRate}/>
+                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.interestRate} onChange={this.handleInterestRateChange}/>
                     <div>
                     <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
@@ -301,7 +395,24 @@ export default class MortgageForm extends React.Component {
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.hoaDues} />
                 </form>
                 <div className="col-75" id="donut">
-                        placeholder
+                    <div className="countUpContainer">
+                        <CountUp
+                            start={0}
+                            end={totalPayment}
+                            duration={1}
+                            separator=","
+                            decimal=","
+                            prefix="$"
+                            className="countUpBrett"
+                        >
+                            {/* {({ countUpRef, start }) => (
+                                <div>
+                                <span ref={countUpRef} />
+                                <button onClick={start}>Start</button>
+                                </div>
+                            )} */}
+                        </CountUp>
+                    </div>
                     {/* <Chart /> */}
                     {/* <PieChart
                         data={[
@@ -359,24 +470,18 @@ export default class MortgageForm extends React.Component {
                         radius={35} 
                         labelPosition={112}
                     />
-                    <CountUp
-                    start={0}
-                    end={totalPayment}
-                    duration={1}
-                    separator=","
-                    decimal=","
-                    prefix="$"
-                   
-                    >
-                    {/* {({ countUpRef, start }) => (
-                        <div>
-                        <span ref={countUpRef} />
-                        <button onClick={start}>Start</button>
-                        </div>
-                    )} */}
-                    </CountUp>
+                    
                     
                 </div>
+                <svg viewBox="0 225 1000 800">
+                    <Piechart x={width} y={height} outerRadius={radius * 0.85} innerRadius={radius * 0.7}
+                        data={[
+                            {label: 'P & I', value: MONTHLYPI},
+                            {label: 'Taxes', value: PROPERTYTAX},
+                            {label: 'Insurance', value: HOMEINSURANCE}
+                        ]} />
+
+                </svg>
             </div>
         );
     }
