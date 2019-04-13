@@ -8,5 +8,5 @@ node_modules/
 
 ## Webpack stuff
 config.js
-dist/bundle.js
+public/bundle.js
 

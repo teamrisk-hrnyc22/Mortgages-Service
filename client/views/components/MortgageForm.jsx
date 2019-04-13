@@ -408,7 +408,7 @@ export default class MortgageForm extends React.Component {
                         <br></br>
                         <label className="fieldLabel">Down payment</label>                        
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.downPayment} onChange={this.handleDownPaymentChange}/>
+                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.downPayment} onChange={this.handleDownPaymentChange}/>
                         <input autoComplete="off" className="inputBrett" onChange={this.handleDownPaymentPercChange} type="tel" value={this.state.mortgageFields.downPaymentPerc} />
                         
                     <div>
