@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
-BUILD_DIR = path.resolve(__dirname, 'public');
+BUILD_DIR = path.resolve(__dirname, 'client/public');
 APP_DIR = path.resolve(__dirname, 'client/views');
 
 var config = {

@@ -10,7 +10,7 @@ var app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../client/public')));
 
 
 app.use(cors());
@@ -22,7 +22,7 @@ app.get('/:number', function(req, res) {
     // console.log('__dirname: ', __dirname);
     // res.locals.id = req.params.number;
     // console.log(res.locals.id);
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
 // if the client requests queries just api it will query the database for some reason
