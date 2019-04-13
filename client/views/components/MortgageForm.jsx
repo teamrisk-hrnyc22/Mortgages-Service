@@ -51,6 +51,7 @@ export default class MortgageForm extends React.Component {
         this.handlePropertyTaxPercChange = this.handlePropertyTaxPercChange.bind(this);
         this.handleLoanProgramChange = this.handleLoanProgramChange.bind(this);
         this.handleInterestRateChange = this.handleInterestRateChange.bind(this);
+        this.handlePropertyTaxChange = this.handlePropertyTaxChange.bind(this);
         this.calculateFieldsHomePrice = this.calculateFieldsHomePrice.bind(this);
         this.calculateFieldsDownPaymentPerc = this.calculateFieldsDownPaymentPerc.bind(this);
         this.calculateFieldsPropertyTaxPerc = this.calculateFieldsPropertyTaxPerc.bind(this);
@@ -60,31 +61,30 @@ export default class MortgageForm extends React.Component {
 
     componentDidMount() {
         var that = this;
-        console.log(window);
         var url;
         var endpoint = this.state.path === '/' ? 1 : this.state.path; 
-        console.log('this.state.path: ', this.state.path);
 
+        //for development
         if ( endpoint === 1 ) {
             url = 'http://localhost:3008/api/price'
         } else {
             url = `http://localhost:3008/api/price${this.state.path}`;
             
         }
-
+        // for deployment
         // if ( endpoint === 1 ) {
         //     url = 'http://18.188.36.91:3008/api/price'
         // } else {
         //     url = `http://18.188.36.91:3008/api/price${this.state.path}`;
         // }
 
-        console.log('url: ', url);
         axios.get(url).then(function(response) {
             console.log('response from server at /price ', response);
             console.log('this is the response.data.price ', response.data.price);
 
             var hpfields = that.calculateFieldsHomePrice(response.data.price);
             var ptfields = that.calculateFieldsPropertyTaxPerc(that.state.mortgageFields.homePrice)
+        
             that.setState({
                 mortgageFields : {
                     homePrice: response.data.price,
@@ -119,33 +119,24 @@ export default class MortgageForm extends React.Component {
     }
 
     calculateFieldsHomePrice(homePrice) {
+        var rpt = this.state.mortgageFields.propertyTaxPerc/100
+        var rdp = this.state.mortgageFields.downPaymentPerc/100
         let obj = {};
-       var rpt = this.state.mortgageFields.propertyTaxPerc/100
-       var rdp = this.state.mortgageFields.downPaymentPerc/100
-       
-       
         obj.downPayment = rdp * homePrice;
         obj.propertyTax = ( homePrice * rpt);
-        console.log('homePrice: ', homePrice);
-        // obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
-        console.log('obj: ', obj);
-        return obj;
         
+        return obj;
     }
 
     calculateFieldsDownPaymentPerc(downPaymentPerc) {
         let obj = {};
-
         obj.downPayment = (downPaymentPerc/100) * this.state.mortgageFields.homePrice;
-        // obj.interestRate = Math.floor(Math.random() * 1.5) + 3; // random number btwn 3.5 & 4.5
 
         return obj;
     }
     calculateFieldsPropertyTaxPerc(propertyTaxPerc) {
-        console.log('propertyTaxPerc: ', propertyTaxPerc);
         var result = typeof propertyTaxPerc;
-        console.log('typeof propertyTaxPerc: ', result);
-
+        console.log('result: ', result);
         let obj = {};
         obj.propertyTax = (this.state.mortgageFields.homePrice - this.state.mortgageFields.downPayment) * (propertyTaxPerc/100);
 
@@ -168,11 +159,11 @@ export default class MortgageForm extends React.Component {
 
     handleDownPaymentChange(e){
         e.preventDefault();
-        // onChange update: DP, PT, and IR
+        // onChange update: montDP, DPPerc, PT, and IR
         console.log('changing down payment with', e.target.value)
         var num = parseInt(e.target.value);
         var updatedState = this.returnState();
-        // you get weird output if you take the dp down to 0 and add 1 again. The DPPerc will stay 0
+        // bug output if you take the dp down to 0 and add 1 again. The DPPerc will stay 0
         if (!isNaN(num)) {
             updatedState.downPayment = num;
             if (this.state.mortgageFields.downPayment !== 0 ) {
@@ -232,43 +223,49 @@ export default class MortgageForm extends React.Component {
         }
     }
 
+    handlePropertyTaxChange(e) {
+        e.preventDefault();
+        // onChange update: montDP, DPPerc, PT, and IR
+        console.log('changing property tax  with', e.target.value)
+        var num = parseInt(e.target.value);
+        var updatedState = this.returnState();
+        // bug output if you take the dp down to 0 and add 1 again. The DPPerc will stay 0
+        if (!isNaN(num)) {
+            updatedState.propertyTax = num;
+            if (this.state.mortgageFields.propertyTax !== 0 ) {
+                // javascript math is funky so we have to do this to get the correct output
+                if ( num === this.state.mortgageFields.homePrice ) {
+                    updatedState.propertyTaxPerc = 100;
+                } else {
+                    updatedState.propertyTaxPerc = ((num / this.state.mortgageFields.homePrice ) * 100);
+                    console.log('updatedState.propertyTaxPer: ', updatedState.propertyTaxPerc);
+                }
+                
+            }
+            this.setState({ mortgageFields: updatedState });
+        } else {
+            updatedState.propertyTax = 0;
+            updatedState.propertyTaxPerc = 0;
+            this.setState({ mortgageFields: updatedState });
+        }
+    }
+
     handlePropertyTaxPercChange(e) {
         e.preventDefault();
         // onChange update: PT
-        
         console.log('changing property tax percentage with', e.target.value)
         var num = parseFloat(e.target.value);
-        console.log('this is the num', num)
+        var updatedState = this.returnState();
+
         if (!isNaN(num)) {
             var ptfields = this.calculateFieldsPropertyTaxPerc(num);
-            console.log(ptfields);
-            this.setState({
-                mortgageFields : {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: ptfields.propertyTax,
-                    propertyTaxPerc: num,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            });
+            updatedState.propertyTaxPerc = num;
+            updatedState.propertyTax = ptfields.propertyTax;
+            this.setState({ mortgageFields: updatedState});
         } else {
-            this.setState({
-                mortgageFields: {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: '',
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.propertyTaxPerc = 0;
+            updatedState.propertyTax = 0;
+            this.setState({ mortgageFields: updatedState })
         }
     }
 
@@ -278,35 +275,17 @@ export default class MortgageForm extends React.Component {
         console.log('changing interestRate with', e.target.value)
         var num = parseInt(e.target.value);
         console.log('this is the num', num)
+
+        var updatedState = this.returnState();
+
         if (!isNaN(num)) {
-            
-            this.setState({
-                mortgageFields : {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: num,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            });
+            updatedState.interestRate = num;
+
+            this.setState(updatedState);
         } else {
-            this.setState({
-                mortgageFields: {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: 1,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.interestRate = 1;
+
+            this.setState({ mortgageFields: updatedState});
         }
     }
     
@@ -315,48 +294,18 @@ export default class MortgageForm extends React.Component {
         e.preventDefault();
         // onchange update: IRq
         console.log('changing home price with', e.target.value)
+        var updatedState = this.returnState();
+        
         if (e.target.value === '30-year fixed') {
-            this.setState({
-                mortgageFields: {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: 30,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.loanProgram = 30;
+            this.setState({ mortgageFields: updatedState });
+
         } else if (e.target.value === '15-year fixed') {
-            this.setState({
-                mortgageFields: {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: 15,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.loanProgram = 15;
+            this.setState({ mortgageFields: updatedState });
         } else {
-            this.setState({
-                mortgageFields: {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: 5,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.loanProgram = 5;
+            this.setState({ mortgageFields: updatedState });
         }
     }
 
@@ -441,7 +390,7 @@ export default class MortgageForm extends React.Component {
                     <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.propertyTax} />
+                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.propertyTax} onChange={this.handlePropertyTaxChange} />
                         <input name="handlePropertyTaxPercChange" autoComplete="off" className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="tel" value={this.state.mortgageFields.propertyTaxPerc} />
                     <div>
                         <br></br>
