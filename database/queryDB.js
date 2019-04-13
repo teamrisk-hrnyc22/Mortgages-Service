@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 const getPriceFromDB = function(err, callback) {
   const randomId = Math.floor(Math.random() * 100) + 1;
 
-  let db = new sqlite3.Database('fakePrices.sql', sqlite3.OPEN_READWRITE, (err) => {
+  let db = new sqlite3.Database('data/fakePrices.sql', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
     }
@@ -30,7 +30,7 @@ const randomId = Math.floor(Math.random() * 100) + 1;
 const byIdgetPriceFromDB = function(err, id=randomId, callback) {
 
 
-  let db = new sqlite3.Database('fakePrices.sql', sqlite3.OPEN_READONLY, (err) => {
+  let db = new sqlite3.Database('data/fakePrices.sql', sqlite3.OPEN_READONLY, (err) => {
     if (err) {
       console.error(err.message);
     }
