@@ -99,7 +99,7 @@ module.exports = {
     } else if ( e.target.name === 'handleInterestRateChange' ) {
         console.log('changing interestRate with', e.target.value)
         var num = parseInt(e.target.value);
-        console.log('context is the num', num)
+        console.log('this is the num', num)
   
         var updatedState = context.returnState();
   
@@ -107,6 +107,7 @@ module.exports = {
             updatedState.interestRate = num;
   
             context.setState({ mortgageFields: updatedState});
+            this.calculateMonthlyPayment(context);
         } else {
             updatedState.interestRate = 1;
   
