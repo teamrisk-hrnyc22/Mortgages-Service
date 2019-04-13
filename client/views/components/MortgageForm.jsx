@@ -54,6 +54,7 @@ export default class MortgageForm extends React.Component {
         this.calculateFieldsDownPaymentPerc = this.calculateFieldsDownPaymentPerc.bind(this);
         this.calculateFieldsPropertyTaxPerc = this.calculateFieldsPropertyTaxPerc.bind(this);
         this.calculateFieldsLoanProgram = this.calculateFieldsLoanProgram.bind(this);
+        this.returnState = this.returnState.bind(this);
     }
 
     componentDidMount() {
@@ -97,6 +98,23 @@ export default class MortgageForm extends React.Component {
                 }
             })
         }).catch((err)=>console.error('componentDidMount',err));
+    }
+
+    returnState() {
+
+        var updatedState = {
+            homePrice: this.state.mortgageFields.homePrice,
+            downPayment: this.state.mortgageFields.downPayment,
+            downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
+            loanProgram: this.state.mortgageFields.loanProgram,
+            interestRate: this.state.mortgageFields.interestRate,
+            propertyTax: this.state.mortgageFields.propertyTax,
+            propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
+            homeInsurance: this.state.mortgageFields.homeInsurance,
+            hoaDues: this.state.mortgageFields.hoaDues
+        }
+
+        return updatedState;
     }
 
     calculateFieldsHomePrice(homePrice) {
@@ -148,64 +166,38 @@ export default class MortgageForm extends React.Component {
         // onChange update: DP, PT, and IR
         console.log('changing home price with', e.target.value)
         var num = parseInt(e.target.value);
-        console.log('this is the num', num)
+        var updatedState = this.returnState();
+
         if (!isNaN(num)) {
-            
             var hpfields = this.calculateFieldsHomePrice(num);
-            console.log(hpfields);
-            this.setState({
-                mortgageFields : {
-                    homePrice: parseInt(num),
-                    downPayment: hpfields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: hpfields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            });
+            updatedState.homePrice = parseInt(num);
+            updatedState.downPayment = hpfields.downPayment;
+            updatedState.propertyTaxPerc = hpfields.propertyTax;
+            
+            this.setState({ mortgageFields: updatedState });
         } else {
-            this.setState({
-                mortgageFields: {
-                    homePrice: '',
-                    downPayment: this.state.mortgageFields.downPayment,
-                    downPaymentPerc: this.state.mortgageFields.downPaymentPerc,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            })
+            updatedState.homePrice = '';
+
+            this.setState({ mortgageFields: updatedState });
         }
     }
 
     handleDownPaymentPercChange(e) {
         e.preventDefault();
         // onChange update:  DP, IR
-        
         console.log('changing down payment percentage with', e.target.value)
         var num = parseFloat(e.target.value);
-        console.log('this is the num', num);
+        
+        var updatedState = this.returnState();
+
         if (!isNaN(num)) {
             var dpfields = this.calculateFieldsDownPaymentPerc(num);
-            console.log(dpfields);
-            this.setState({
-                mortgageFields : {
-                    homePrice: this.state.mortgageFields.homePrice,
-                    downPayment: dpfields.downPayment,
-                    downPaymentPerc: num,
-                    loanProgram: this.state.mortgageFields.loanProgram,
-                    interestRate: this.state.mortgageFields.interestRate,
-                    propertyTax: this.state.mortgageFields.propertyTax,
-                    propertyTaxPerc: this.state.mortgageFields.propertyTaxPerc,
-                    homeInsurance: this.state.mortgageFields.homeInsurance,
-                    hoaDues: this.state.mortgageFields.hoaDues
-                }
-            });
+            
+            updatedState.downPayment = dpfields.downPayment;
+            updatedState.downPaymentPerc = num;
+
+            this.setState({ mortgageFields: updatedState });
+    
         } else {
             this.setState({
                 mortgageFields: {
@@ -399,7 +391,7 @@ export default class MortgageForm extends React.Component {
                         <label className="fieldLabel">Home price</label>
                         <div className="input-overlay_left inputs-homePrice">
                             <div className="zsg-input-overlay-text_left">$</div>
-                            <input autoComplete="off" className="inputBrett" onChange={this.handleHomePriceSubmit} type="tel" value={this.state.mortgageFields.homePrice}/>
+                            <input name="handleHomePrice" autoComplete="off" className="inputBrett" onChange={this.handleHomePriceSubmit} type="tel" value={this.state.mortgageFields.homePrice}/>
                         </div>
 
                         {/* <p class="zsg-form-error-text">Invalid home price</p> */}
@@ -409,17 +401,17 @@ export default class MortgageForm extends React.Component {
                         <label className="fieldLabel">Down payment</label>                        
                     </div>
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.downPayment} onChange={this.handleDownPaymentChange}/>
-                        <input autoComplete="off" className="inputBrett" onChange={this.handleDownPaymentPercChange} type="tel" value={this.state.mortgageFields.downPaymentPerc} />
+                        <input name="handleDownPaymentPerChange" autoComplete="off" className="inputBrett" onChange={this.handleDownPaymentPercChange} type="tel" value={this.state.mortgageFields.downPaymentPerc} />
                         
                     <div>
                         <br></br>
                         <label className="fieldLabel">Loan Program</label>
                     </div>
                         
-                        <select onChange={this.handleLoanProgramChange} >
-                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>30-year fixed</option>
-                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>15-year fixed</option>
-                            <option className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.loanProgram}>5/1 ARM</option>
+                        <select name="handleLoanProgramChange" onChange={this.handleLoanProgramChange} >
+                            <option className="inputBrett" >30-year fixed</option>
+                            <option className="inputBrett" >15-year fixed</option>
+                            <option className="inputBrett" >5/1 ARM</option>
                         </select>
 
                     <div>
@@ -427,13 +419,13 @@ export default class MortgageForm extends React.Component {
                         {/* <a href="https://www.zillow.com/mortgage-rates/?value=1522429&amp;down=304486&amp;auto=true&amp;source=Z_Mortgage_Calc_rates" target="_blank" rel="nofollow">See current rates</a> */}
                         <label className="fieldLabel">Interest rate</label>
                     </div>
-                        <input autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.interestRate} onChange={this.handleInterestRateChange}/>
+                        <input name="handleInterestRateChange" autoComplete="off" className="inputBrett" type="tel" value={this.state.mortgageFields.interestRate} onChange={this.handleInterestRateChange}/>
                     <div>
                     <br></br><br></br>
                         <label className="fieldLabel">Property tax</label>
                     </div>
                         <input autoComplete="off" className="inputBrett" type="tel" defaultValue={this.state.mortgageFields.propertyTax} />
-                        <input autoComplete="off" className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="tel" value={this.state.mortgageFields.propertyTaxPerc} />
+                        <input name="handlePropertyTaxPercChange" autoComplete="off" className="inputBrett" onChange={this.handlePropertyTaxPercChange} type="tel" value={this.state.mortgageFields.propertyTaxPerc} />
                     <div>
                         <br></br>
                         <label className="fieldLabel">Home Insurance</label>
