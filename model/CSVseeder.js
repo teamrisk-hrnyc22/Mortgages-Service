@@ -14,6 +14,8 @@ writableStream.on('finish', () => {
 
 csvStream.pipe(writableStream);
 
+console.log('Starting the seeding');
+
 for (let i = 1; i < 10000000; i++) {
 
     let randomNumberToInsert = (faker.random.number({

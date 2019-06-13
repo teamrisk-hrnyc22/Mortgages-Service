@@ -1,6 +1,8 @@
-var fs = require('fs');
-var {Pool, Client} = require('pg');
-var copyFrom = require('pg-copy-streams').from;
+const fs = require('fs');
+const {Pool, Client} = require('pg');
+const copyFrom = require('pg-copy-streams').from;
+const path = require('path');
+
 
 // const pool = new Pool({
 //   user: 'testuser',
@@ -43,8 +45,10 @@ client.connect()
 })
 
 console.time('Start loading');
+var generatedCSVPath = path.join(__dirname + "/mortgageData.csv");
 
-client.query(`COPY mortgages FROM '/Users/Nyeh/Desktop/gitRepos/Mortgage-Service/model/mortgageData.csv' DELIMITER ',' CSV HEADER;
+
+client.query(`COPY mortgages FROM '${generatedCSVPath}' DELIMITER ',' CSV HEADER;
 `, (err, res) => {
   if (err) {
     console.error('There was an error: ', err);
