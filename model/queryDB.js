@@ -45,7 +45,7 @@ const byIdgetPriceFromDB = function(err, id=randomId, callback) {
         console.log('this is the err', err);
       }
       console.log(`this is the result ${JSON.stringify(result)}`);
-      callback(result);
+      callback(null, result);
     });
   });
 };
