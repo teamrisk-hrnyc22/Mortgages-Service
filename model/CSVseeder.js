@@ -26,6 +26,9 @@ for (let i = 1; i < 10000000; i++) {
     csvStream.write({id: i, price: randomNumberToInsert});
 }
 
+
+
+
 csvStream.end();
 
 
