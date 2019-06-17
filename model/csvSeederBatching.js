@@ -57,13 +57,12 @@ let recSeeder = () => {
   let recSeeds = [];
   while (recSeeds.length < 1000) {
     recSeeds.push({
-			id: reviewId,
-			price: faker.random.number({
-				'min': 10,
-				'max': 100
-			}),
-			
-		});
+		id: reviewId,
+		price: faker.random.number({
+			'min': 634000,
+			'max': 1700000
+		}),
+	});
 	reviewId++;
   }
   return recSeeds;
