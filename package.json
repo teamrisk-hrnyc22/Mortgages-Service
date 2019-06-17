@@ -16,7 +16,8 @@
   "scripts": {
     "start": "node server/index",
     "startDev": "nodemon server/index",
-    "seed": "node db/createSQL3DB.js",
+    "seed": "node model/CSVseeder.js",
+    "loadSeed": "node model/loadPostgres.js",
     "build": "webpack -d --watch",
     "sqlShell": "sqlite3 fakePrices.sql",
     "queryPricesDB": "node db/pricesDB.js"
