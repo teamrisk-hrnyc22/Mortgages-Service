@@ -14,10 +14,10 @@
     ]
   },
   "scripts": {
-    "start": "node server/index",
-    "startDev": "nodemon server/index",
+    "start": "node server/indexWithMongo.js",
+    "startDev": "nodemon server/indexWithMongo.js",
     "seed": "node model/CSVseeder.js",
-    "loadSeed": "node model/loadPostgres.js",
+    "loadSeedPostgres": "node model/loadPostgres.js",
     "build": "webpack -d --watch",
     "sqlShell": "sqlite3 fakePrices.sql",
     "queryPricesDB": "node db/pricesDB.js"
