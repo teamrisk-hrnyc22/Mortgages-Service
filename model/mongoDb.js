@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var url = 'mongodb://localhost:270217/mortgages';
+var url = 'mongodb://localhost:27017/mortgages';
 
 var mortgagesSchema = new mongoose.Schema({
     id: {type: Number, index: true},
@@ -8,6 +8,6 @@ var mortgagesSchema = new mongoose.Schema({
 
 mongoose.connect(url, {useNewUrlParser: false});
 
-module.exports.Mortgages = mongoose.model('mortgage', mortgagesSchema, 'mortgages');
+module.exports.Mortgages = mongoose.model('Mortgage', mortgagesSchema);
 
 

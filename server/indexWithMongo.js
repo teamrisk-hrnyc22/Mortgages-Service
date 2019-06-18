@@ -1,7 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var {Mortgages} = require('../model/queryDB.js');
+var {Mortgages} = require('../model/mongoDb.js');
 var path = require('path');
 var cors = require('cors');
 var mongoose = require('mongoose');
@@ -29,7 +29,10 @@ app.get('/api/price/:priceId', function(req, res) {
     let queryId = req.params.priceId;
     Mortgages.findOne({'id': queryId})
     .then((data) => {
-        res.status(201).send(data)
+        console.log('Here we gooooo');
+        console.log(data);
+        res.status(201);
+        res.send(data);
     })
 });
 
